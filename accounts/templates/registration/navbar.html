@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+{% block content %}
+<nav class="navbar navbar-light bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'accounts:login'%}">
+      <i class="fas fa-laugh-wink"></i>
+      snippet_tester
+    </a>
+  </div>
+</nav>
+
+{% endblock %}
+
+
+</body>
+</html>
