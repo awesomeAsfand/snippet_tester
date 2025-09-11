@@ -1,0 +1,19 @@
+<h2>Create a New Test</h2>
+<form method="post">
+  {% csrf_token %}
+
+  <h4>Page Info</h4>
+  {{ page_form.as_p }}
+
+  <h4>Test Info</h4>
+  {{ test_form.as_p }}
+
+  <h4>Variants</h4>
+  {{ variant_formset.management_form }}
+  {% for form in variant_formset %}
+      {{ form.as_p }}
+      <hr>
+  {% endfor %}
+
+  <button type="submit">Create Test</button>
+</form>

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "dashboard.apps.DashboardConfig",
+    "testt.apps.TesttConfig",
     'social_django',
     'django_extensions',
 ]
