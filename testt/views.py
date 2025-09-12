@@ -1,4 +1,9 @@
+from django.http import HttpResponse
+from django.middleware.csrf import get_token
 from django.shortcuts import render, redirect
+from django.template.defaulttags import csrf_token
+from django.views.decorators.http import require_http_methods
+
 from .forms import TestForm, PageForm, SnippetVariantFormSet, SnippetVariant
 from .models import Page, SnippetVariant, Test
 from django.shortcuts import get_object_or_404, render
@@ -44,4 +49,33 @@ def detail_test(request, test_id):
     return render(request, 'testt/detail_test.html', {'detail_test': detail_test})
 
 
+@require_http_methods(["POST"])
+def update_status(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    new_status = request.POST.get('status')
+
+    if new_status in dict(Test.STATUS_CHOICES):
+        test.status = new_status
+        test.save()
+
+    csrf_token = get_token(request)
+
+    select_html = f'''
+    <select class="form-control form-control-sm"
+            hx-post="{request.path}"
+            hx-trigger="change"
+            hx-target="this"
+            hx-swap="outerHTML"
+            hx-headers='{{"X-CSRFToken": "{csrf_token}"}}'
+            name="status">
+    '''
+
+    for value, label in Test.STATUS_CHOICES:
+        selected = 'selected' if value == test.status else ''
+        select_html += f'<option value="{value}" {selected}>{label}</option>'
+
+    select_html += '</select>'
+    print(csrf_token)
+
+    return HttpResponse(select_html)
 

@@ -39,8 +39,7 @@ class Test(models.Model):
         return f"Test on {self.page.url} ({self.status})"
 
     def duration(self):
-        duration = self.start_date-self.end_date
-        return duration
+        return (self.end_date-self.start_date).days
 
     def get_variants(self):
         return self.page.variants.all()

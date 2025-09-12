@@ -25,9 +25,9 @@ SECRET_KEY = "django-insecure-m-wy3_p74&1jrdh^9diywt_x+3uph7s6b@_k4($v63-n74-or#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['sinppet-tester.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['sinppet-tester.com', 'localhost', '127.0.0.1']
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [

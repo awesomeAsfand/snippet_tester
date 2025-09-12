@@ -8,5 +8,5 @@ from testt.models import Test
 
 @login_required
 def dashboard(request):
-    tests = Test.objects.select_related('page').all().order_by('start_date')
+    tests = Test.objects.select_related('page').filter(page__user=request.user).order_by('start_date')
     return render(request, 'dashboard/dashboard.html', {'tests': tests})
