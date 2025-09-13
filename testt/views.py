@@ -79,3 +79,16 @@ def update_status(request, test_id):
 
     return HttpResponse(select_html)
 
+
+def delete_test(request, test_id):
+    get_test = get_object_or_404(Test, pk=test_id)
+    if request.method == 'POST':
+        get_test.delete()
+    return HttpResponse(204)
+
+
+
+
+
+
+
