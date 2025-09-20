@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from testt.models import Test
+from testt.models import Test, Page
 
 
 # Create your views here.

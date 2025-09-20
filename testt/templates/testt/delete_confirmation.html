@@ -1,0 +1,15 @@
+{% extends 'testt/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<form method="post" action="{% url 'testt:delete_test' page.id %}">
+    {% csrf_token %}
+    <p> Are you sure you want to delete {{page.url}}</p>
+    <a href="{% url 'dashboard:dashboard' %}"> Cancel</a>
+    <input type="submit" value="confirmed">
+</form>
+
+
+{% endblock %}

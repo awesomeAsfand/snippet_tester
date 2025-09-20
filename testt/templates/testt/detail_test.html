@@ -14,6 +14,7 @@
 <h2>Test Detail View</h2>
 
 <ul>
+    <li>{{ detail_test.id }}</li>
     <li>{{ detail_test.page }}</li>
     <li>{{ detail_test.page.variants }}</li>
     <li>{{ detail_test.start_date }}</li>
@@ -31,8 +32,8 @@
 {% endfor %}
 </ul>
 
-
-
+<button class="btn btn-primary">Edit</button>
+<a class="btn btn-danger" href="{% url 'testt:delete_confirmation' detail_test.page.id %}">Delete</a>
 </body>
 {% endblock %}
 </html>

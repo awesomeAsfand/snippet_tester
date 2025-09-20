@@ -53,7 +53,12 @@ def create_test(request):
 
 def detail_test(request, test_id):
     detail_test = get_object_or_404(Test, pk=test_id)
+
     return render(request, 'testt/detail_test.html', {'detail_test': detail_test})
+
+
+# views.py
+from django.shortcuts import render
 
 
 @require_http_methods(["POST"])
@@ -86,15 +91,17 @@ def update_status(request, test_id):
 
     return HttpResponse(select_html)
 
+@login_required
+def delete_confirmation(request, page_id):
+    page = get_object_or_404(Page, pk=page_id, user=request.user)
+    # return redirect('testt:delete_confirmation', page_id=page.id)
+    return render(request, 'testt/delete_confirmation.html', {'page': page})
+
 
 @login_required()
-@require_http_methods(['DELETE'])
-def delete_test(request, test_id):
-    get_test = get_object_or_404(Test, pk=test_id)
-    page = get_test.page
-    if get_test.page.user != request.user:
-        return HttpResponseForbidden('You cannot delete this')
-    else:
+def delete_test(request, page_id):
+    page = get_object_or_404(Page, pk=page_id, user=request.user)
+    if request.method == 'POST':
         page.delete()
-    return HttpResponse(status=204)
-
+        return redirect('dashboard:dashboard')
+    return redirect('testt:delete_confirmation', page_id=page.id)
