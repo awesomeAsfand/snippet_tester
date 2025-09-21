@@ -9,5 +9,6 @@ urlpatterns = [
     path('update-status/<int:test_id>/', views.update_status, name='update_status'),
     path('delete-confirmation/<int:page_id>/', views.delete_confirmation, name='delete_confirmation'),
     path('delete-test/<int:page_id>/', views.delete_test, name='delete_test'),
+    path('edit-page/<int:test_id>/', views.edit_page, name='edit_page'),
 ]
 

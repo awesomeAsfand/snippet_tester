@@ -1,15 +1,8 @@
-<!DOCTYPE html>
+
 {% extends 'testt/base.html'%}
 {% load static %}
-
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 {% block content %}
-<body>
+
 
 <h2>Test Detail View</h2>
 
@@ -32,8 +25,8 @@
 {% endfor %}
 </ul>
 
-<button class="btn btn-primary">Edit</button>
+<a class="btn btn-danger" href="{% url 'testt:edit_page' detail_test.page.id %}">Edit</a>
 <a class="btn btn-danger" href="{% url 'testt:delete_confirmation' detail_test.page.id %}">Delete</a>
-</body>
+
 {% endblock %}
-</html>
+

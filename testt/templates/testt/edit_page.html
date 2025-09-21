@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'testt/base.html' %}
+{% load static %}
+{% block content %}
 
-</body>
-</html>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Create a New Test</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Test Configuration</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Page Info Section -->
+                        <div class="mb-4">
+                            <h5 class="font-weight-bold text-gray-800 border-bottom pb-2 mb-3">Page Info</h5>
+                            {{ page_form.as_p }}
+                        </div>
+
+                        <!-- Test Info Section -->
+                        <div class="mb-4">
+                            <h5 class="font-weight-bold text-gray-800 border-bottom pb-2 mb-3">Test Info</h5>
+                            {{ test_form.as_p }}
+                        </div>
+
+                        <!-- Variants Section -->
+                        <div class="mb-4">
+                            <h5 class="font-weight-bold text-gray-800 border-bottom pb-2 mb-3">Variants</h5>
+                            {{ variant_formset.management_form }}
+                            {% for form in variant_formset %}
+                                <div class="border rounded p-3 mb-3 bg-light">
+                                    {{ form.as_p }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus fa-sm text-white-50 mr-2"></i>Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+```
+{% endblock %}
