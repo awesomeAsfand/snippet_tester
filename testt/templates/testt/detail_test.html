@@ -1,32 +1,78 @@
-
-{% extends 'testt/base.html'%}
+{% extends 'testt/base.html' %}
 {% load static %}
+
 {% block content %}
 
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Test Detail</h1>
+        <div>
+            <a href="{% url 'testt:edit_page' detail_test.id %}" class="btn btn-warning btn-sm shadow-sm">
+                <i class="fas fa-edit fa-sm text-white-50 mr-1"></i> Edit
+            </a>
+            <a href="{% url 'testt:delete_confirmation' detail_test.page.id %}" class="btn btn-danger btn-sm shadow-sm">
+                <i class="fas fa-trash fa-sm text-white-50 mr-1"></i> Delete
+            </a>
+        </div>
+    </div>
 
-<h2>Test Detail View</h2>
+    <!-- Centered Row -->
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <!-- Test Info Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Test Information</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Test ID:</strong> {{ detail_test.id }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Page URL:</strong> <a href="{{ detail_test.page.url }}" target="_blank">{{ detail_test.page.url }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Status:</strong> <span class="badge badge-{{ detail_test.get_status_badge_class }}">{{ detail_test.get_status_display }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Start Date:</strong> {{ detail_test.start_date|date:"M j, Y" }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>End Date:</strong> {{ detail_test.end_date|date:"M j, Y" }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Duration:</strong> {{ detail_test.duration }} days
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-<ul>
-    <li>{{ detail_test.id }}</li>
-    <li>{{ detail_test.page }}</li>
-    <li>{{ detail_test.page.variants }}</li>
-    <li>{{ detail_test.start_date }}</li>
-    <li>{{ detail_test.end_date }}</li>
-    <li>{{ detail_test.duration }}</li>
-    <li>{{ detail_test.status }}</li>
-</ul>
-
-
-
-<ul>
-{% for varient in detail_test.get_variants %}
-    <li>{{ varient.title }}</li>
-    <li>{{ varient.description }}</li>
-{% endfor %}
-</ul>
-
-<a class="btn btn-danger" href="{% url 'testt:edit_page' detail_test.page.id %}">Edit</a>
-<a class="btn btn-danger" href="{% url 'testt:delete_confirmation' detail_test.page.id %}">Delete</a>
+            <!-- Variants Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Variants</h6>
+                    <span class="badge badge-secondary">{{ detail_test.get_variants|length }} variants</span>
+                </div>
+                <div class="card-body">
+                    {% for variant in detail_test.get_variants %}
+                        <div class="border-left-primary border-left-lg pl-3 mb-4 pb-3">
+                            <h5 class="font-weight-bold text-gray-800">{{ variant.title|default:"Untitled Variant" }}</h5>
+                            <p class="text-gray-700">{{ variant.description|default:"No description provided." }}</p>
+                        </div>
+                    {% empty %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-box-open fa-2x mb-2"></i>
+                            <p>No variants found for this test.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
 
 {% endblock %}
-

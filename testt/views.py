@@ -99,7 +99,7 @@ def delete_confirmation(request, page_id):
     return render(request, 'testt/delete_confirmation.html', {'page': page})
 
 
-@login_required()
+@login_required
 def delete_test(request, page_id):
     page = get_object_or_404(Page, pk=page_id, user=request.user)
     if request.method == 'POST':
@@ -108,29 +108,32 @@ def delete_test(request, page_id):
     return redirect('testt:delete_confirmation', page_id=page.id)
 
 
-@login_required()
+@login_required
 def edit_page(request, test_id):
-    test = get_object_or_404(Page, pk=test_id, user=request.user)
+    test = get_object_or_404(Test, pk=test_id, page__user=request.user)
     page = test.page
     if request.method == 'POST':
         page_form = PageForm(request.POST, instance=page)
-        test_from = TestForm(request.POST, instance=test)
+        test_form = TestForm(request.POST, instance=test)
         variant_formset = SnippetVariantFormSet(request.POST, queryset=SnippetVariant.objects.filter(page=page))
 
-        if page_form.is_valid() and test_from.is_valid() and variant_formset.is_valid():
-            test_from.save()
-            page_form.save()
-            variants = variant_formset.save(commit=False)
-            for variant in variants:
-                variant.page = page
-                variant.save()
-
-            for obj in variant_formset.deleted_objects:
-                obj.delete()
-            return redirect('dashbaord:dashboard')
-        else:
-            page_form = PageForm(request.POST, instance=page)
-            test_from = TestForm(request.POST, instance=test)
-            variant_formset = SnippetVariantFormSet(request.POST, queryset=SnippetVariant.objects.filter(page=page))
-        context = {'page_form': page_form, 'test_from': test_from, 'variant_formset': variant_formset}
-        return render(request, 'testt/edit_page.html', context)
+        if page_form.is_valid() and test_form.is_valid() and variant_formset.is_valid():
+            try:
+                with transaction.atomic():
+                    test_form.save()
+                    page_form.save()
+                    variants = variant_formset.save(commit=False)
+                    for variant in variants:
+                        variant.page = page
+                        variant.save()
+                    for obj in variant_formset.deleted_objects:
+                        obj.delete()
+                    return redirect('dashboard:dashboard')
+            except Exception:
+                pass
+    else:
+        page_form = PageForm(instance=page)
+        test_form = TestForm(instance=test)
+        variant_formset = SnippetVariantFormSet(queryset=SnippetVariant.objects.filter(page=page))
+    context = {'page_form': page_form, 'test_form': test_form, 'variant_formset': variant_formset}
+    return render(request, 'testt/edit_page.html', context)
